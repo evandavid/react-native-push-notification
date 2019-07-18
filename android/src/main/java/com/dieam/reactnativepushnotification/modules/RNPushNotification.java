@@ -145,6 +145,19 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     public void subscribeToTopic(String topic) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
+    
+    @ReactMethod
+    public void abandonPermissions() {
+        ReactContext reactContext = getReactApplicationContext();
+        Intent GCMService = new Intent(reactContext, RNPushNotificationRegistrationService.class);
+
+        try { 
+            GCMService.putExtra("senderID", "");
+            reactContext.startService(GCMService);
+        } catch (Exception e) {
+            Log.d("EXCEPTION SERVICE::::::", "requestPermissions: " + e);
+        }
+    }
 
     @ReactMethod
     public void presentLocalNotification(ReadableMap details) {
